@@ -11,6 +11,7 @@ cd build && cpack -G DEB && sudo dpkg -i nvim-linux64.deb
 
 # install my dotfiles into .config/nvim
 git clone https://github.com/xalpol12/nvim 
-mkdir -p $HOME/.config/nvim/
-mv ./nvim/* $HOME/.config/nvim
-rm -r ./nvim/
+sudo sh -c 'mkdir -p $HOME/.config/nvim/ && mv ./nvim/* $HOME/.config/nvim && rm -r ./nvim/'
+
+# remove neovim source files
+sudo rm -r ./neovim
