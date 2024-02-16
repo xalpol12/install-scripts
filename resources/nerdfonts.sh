@@ -2,7 +2,7 @@
 
 sudo apt install unzip -y
 
-mkdir -p ~/.local/share/fonts
+mkdir -p $HOME/.local/share/fonts
 
 cd /tmp
 fonts=(
