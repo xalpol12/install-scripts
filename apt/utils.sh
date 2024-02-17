@@ -3,9 +3,6 @@
 # vim
 sudo apt install vim -y
 
-# simple terminal
-sudo apt install alacritty -y
-
 # resources
 sudo apt install htop -y
 
