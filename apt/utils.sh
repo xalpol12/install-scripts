@@ -3,7 +3,7 @@
 # vim
 sudo apt install vim -y
 
-# resources
+# resources monitor
 sudo apt install htop -y
 
 # neofetch
@@ -14,6 +14,9 @@ sudo apt install curl -y
 
 # ripgrep
 sudo apt install ripgrep -y
+
+# audio control
+sudo apt install pavucontrol -y
 
 # whois
 sudo apt install whois -y

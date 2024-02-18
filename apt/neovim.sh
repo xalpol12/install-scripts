@@ -29,3 +29,6 @@ sudo mkdir -p $HOME/.config/nvim/ && sudo mv ./nvim/* $HOME/.config/nvim && sudo
 
 # add clipoard provider
 sudo apt install xclip -y
+
+# add ripgrep for <leader>ps searching
+sudo apt install ripgrep -y

@@ -15,6 +15,12 @@ sudo apt install -y rofi
 # hotkeys
 sudo apt install -y sxhkd
 
+# media player keys
+sudo apt install -y playerctl 
+
+# audio control
+sudo apt install -y pavucontrol
+
 # notifications
 sudo apt install -y dunst
 
