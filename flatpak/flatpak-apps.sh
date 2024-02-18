@@ -3,8 +3,8 @@
 # access control for other flatpaks
 flatpak install flathub com.github.tchx84.Flatseal
 
-# light browser
-flatpak install flathub com.brave.Browser
+# browser
+flatpak install flathub org.mozilla.firefox
 
 # mail client
 flatpak install flathub org.mozilla.Thunderbird
