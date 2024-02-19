@@ -19,8 +19,13 @@ infocmp alacritty
 
 sudo cp target/release/alacritty /usr/local/bin
 
-# remove source code
-cd .. && sudo rm -r alacritty
+# copy code completion
+sudo cp 
+
+# copy code completion to 'extra' dir and remove source code
+mkdir -p ~/extra
+cd .. && sudo cp extra/completions ~/extra/completions/ && sudo rm -r alacritty
 
 # add alacritty to x-term alternatives
 sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/alacritty 50
+
