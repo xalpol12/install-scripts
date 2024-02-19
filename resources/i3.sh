@@ -18,6 +18,9 @@ sudo apt install -y sxhkd
 # audio control
 sudo apt install -y pavucontrol
 
+# brightness media key control
+sudo apt install -y brightnessctl
+
 # notifications
 sudo apt install -y dunst
 
