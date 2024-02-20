@@ -25,3 +25,5 @@ do
     rm $font.zip
 done
 fc-cache
+
+sudo apt install fonts-font-awesome -y
