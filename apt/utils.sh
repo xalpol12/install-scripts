@@ -18,5 +18,8 @@ sudo apt install whois -y
 # pdf reader
 sudo apt install zathura -y
 
+# file explorer
+sudo apt install ranger -y
+
 # clean orphaned packages
 sudo apt autoremove
