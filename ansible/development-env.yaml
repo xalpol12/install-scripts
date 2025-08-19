@@ -1,0 +1,130 @@
+---
+- name: Setup Development Environment on Fedora
+  hosts: localhost
+  become: true
+
+  vars:
+    sdkman_dir: "/home/{{ lookup('env','USER') }}/.sdkman"
+    java_version: "21.0.2-tem"
+
+  tasks:
+    - name: Ensure base packages are installed
+      dnf:
+        name:
+          - curl
+          - wget
+          - unzip
+          - zip
+          - git
+          - gcc
+          - make
+          - dnf-plugins-core
+        state: present
+
+    - name: Install Docker
+      dnf:
+        name: docker
+        state: present
+
+    - name: Enable and start Docker
+      systemd:
+        name: docker
+        enabled: true
+        state: started
+
+    - name: Add current user to docker group
+      user:
+        name: "{{ lookup('env','USER') }}"
+        groups: docker
+        append: yes
+
+    - name: Install Minikube
+      get_url:
+        url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        dest: /usr/local/bin/minikube
+        mode: '0755'
+
+    - name: Get latest stable kubectl version
+      shell: curl -L -s https://dl.k8s.io/release/stable.txt
+      register: kubectl_version
+
+    - name: Install kubectl
+      get_url:
+        url: "https://dl.k8s.io/release/{{ kubectl_version.stdout }}/bin/linux/amd64/kubectl"
+        dest: /usr/local/bin/kubectl
+        mode: '0755'
+
+    - name: Install Node.js and npm (for Angular)
+      dnf:
+        name: nodejs
+        state: present
+
+    - name: Install Angular CLI globally
+      npm:
+        name: "@angular/cli"
+        global: yes
+
+    - name: Install SDKMAN
+      become: false
+      shell: |
+        curl -s "https://get.sdkman.io" | bash
+      args:
+        creates: "{{ sdkman_dir }}/bin/sdkman-init.sh"
+
+    - name: Load SDKMAN in shell
+      become: false
+      shell: |
+        source {{ sdkman_dir }}/bin/sdkman-init.sh
+      args:
+        executable: /bin/bash
+
+    - name: Install Java 21 with SDKMAN
+      become: false
+      shell: |
+        source {{ sdkman_dir }}/bin/sdkman-init.sh && sdk install java {{ java_version }}
+      args:
+        creates: "{{ sdkman_dir }}/candidates/java/{{ java_version }}"
+
+    - name: Install Maven with SDKMAN
+      become: false
+      shell: |
+        source {{ sdkman_dir }}/bin/sdkman-init.sh && sdk install maven
+      args:
+        creates: "{{ sdkman_dir }}/candidates/maven"
+
+    - name: Install Gradle with SDKMAN
+      become: false
+      shell: |
+        source {{ sdkman_dir }}/bin/sdkman-init.sh && sdk install gradle
+      args:
+        creates: "{{ sdkman_dir }}/candidates/gradle"
+
+    - name: Install Microsoft VS Code repo
+      command: rpm --import https://packages.microsoft.com/keys/microsoft.asc
+
+    - name: Add VS Code repo
+      copy:
+        dest: /etc/yum.repos.d/vscode.repo
+        content: |
+          [code]
+          name=Visual Studio Code
+          baseurl=https://packages.microsoft.com/yumrepos/vscode
+          enabled=1
+          gpgcheck=1
+          gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+
+    - name: Install VS Code
+      dnf:
+        name: code
+        state: present
+
+    - name: Install VS Code extensions for Java and Angular
+      become: false
+      shell: |
+        code --install-extension vscjava.vscode-java-pack || true
+        code --install-extension redhat.vscode-xml || true
+        code --install-extension ms-kubernetes-tools.vscode-kubernetes-tools || true
+        code --install-extension angular.ng-template || true
+      args:
+        executable: /bin/bash
+
